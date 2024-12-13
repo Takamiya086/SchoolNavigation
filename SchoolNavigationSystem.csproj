@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assert\Icon\Icon.ico" />
+    <None Remove="Assert\Image\Map.png" />
+    <None Remove="Assert\Image\WindowBackground.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assert\Cursor\MyCursor.cur" />
+    <Resource Include="Assert\Icon\Icon.ico" />
+    <Resource Include="Assert\Image\Map.png" />
+    <Resource Include="Assert\Image\WindowBackground.png" />
+  </ItemGroup>
+
+</Project>
