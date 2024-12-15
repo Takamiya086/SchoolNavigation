@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
@@ -21,17 +21,23 @@ namespace SchoolNavigationSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        // TODO 之后要设置文件来对数据进行存储
         // 测试用数据
         internal Dictionary<String, String> adminList = new(); // 管理员用户集
+        internal string[,] AttractionInfo = new string[200, 220]; // 拿来存景点信息
 
         public MainWindow()
         {
             InitializeComponent();
-            InitializeAtlas(200, 200);
-            SetPosition(49, 49);
+
+            InitializeAtlas(200, 220); // 目前测试数据大小，大小差不多，大一点也可以，这个大小感觉稍微有点小，不过也可以用
+
+            AddAttractionToUI(49, 49, "我觉得你说得对"); // 尝试添加景点
         }
 
         // 地图点击显示信息测试
+
+        // 初始化地图函数 通常情况只调用一次
         private void InitializeAtlas(int row, int column)
         {
             // 先清理网格，防止重复添加
@@ -50,45 +56,30 @@ namespace SchoolNavigationSystem
             return;
         }
 
-        // 添加地点标记
-        private void SetPosition(int row, int column)
+        private void AtlasGrid_MouseDown(object sender, RoutedEventArgs e) { return; }
+        private void AtlasGrid_MouseUp(object sender, RoutedEventArgs e)
         {
-            Button button = new Button
-            {
-                Content = "Damn"
-            };
-            button.Style = (Style)this.Resources["PositionMark"];
-            Grid.SetRow(button, row);
-            Grid.SetColumn(button, column);
-            AtlasGrid.Children.Add(button);
+            LeftSiderBar.Visibility = Visibility.Visible;
+            Info.Text = "点击一个地点可查看位置信息";
             return;
         }
 
-        private void Canvas_MouseDown(object sender, RoutedEventArgs e)
+        // 景点被点击时替换信息显示框的文字
+        private void Attraction_MouseDown(object sender, RoutedEventArgs e) { return; }
+        private void Attraction_MouseUp(object sender, RoutedEventArgs e)
         {
-            return;
-        }
-        private void Canvas_MouseUp(object sender, RoutedEventArgs e)
-        {
-            Info.Text = "111";
-            return;
-        }
-        private void Position_MouseDown(object sender, RoutedEventArgs e)
-        {
-            return;
-        }
-        private void Position_MouseUp(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(Info.Text))
+            Button button = (Button)sender;
+            string targetInfo = AttractionInfo[Grid.GetRow(button), Grid.GetColumn(button)];
+            if (Info.Text != targetInfo)
             {
-                Info.Text = "你说得对，但是西安邮电大学是一款我的问题，这两年来给我带来很多乐趣。\n哦，我的邮宝，爱你哦。";
-                return;
+                LeftSiderBar.Visibility = Visibility.Visible;
+                Info.Text = targetInfo;
             }
             else
             {
-                Info.Text = "";
-                return;
+                Info.Text = string.Empty;
             }
+            return;
         }
 
         // 登录按钮事件
@@ -167,14 +158,14 @@ namespace SchoolNavigationSystem
             Color color = (Color)ColorConverter.ConvertFromString("#E75759");
             LeftTrigger.Background = new SolidColorBrush(color);
 
-            if (LeftSiderBarLogin.Visibility == Visibility.Visible)
+            if (LeftSiderBar.Visibility == Visibility.Visible)
             {
-                LeftSiderBarLogin.Visibility = Visibility.Collapsed;
+                LeftSiderBar.Visibility = Visibility.Collapsed;
                 return;
             }
             else
             {
-                LeftSiderBarLogin.Visibility = Visibility.Visible;
+                LeftSiderBar.Visibility = Visibility.Visible;
                 return;
             }
         }
@@ -200,6 +191,21 @@ namespace SchoolNavigationSystem
                 RightSiderBarLogin.Visibility = Visibility.Visible;
                 return;
             }
+        }
+
+        // 添加景点的函数，不是管理员不可以用
+        private void AddAttractionToUI(int row, int col, string info)
+        {
+            Button button = new Button
+            {
+                Content = ""
+            };
+            button.Style = (Style)this.Resources["Attraction"];
+            Grid.SetRow(button, row);
+            Grid.SetColumn(button, col);
+            AtlasGrid.Children.Add(button);
+            AttractionInfo[49, 49] = info;
+            return;
         }
     }
 }
