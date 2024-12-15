@@ -1,4 +1,4 @@
-﻿<Window x:Class="SchoolNavigationSystem.MainWindow"
+<Window x:Class="SchoolNavigationSystem.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -27,9 +27,9 @@
         </Style>
 
         <!-- 地点标记样式模板-->
-        <Style x:Key="PositionMark" TargetType="Button">
-            <EventSetter Event="PreviewMouseDown" Handler="Position_MouseDown"/>
-            <EventSetter Event="PreviewMouseUp" Handler="Position_MouseUp"/>
+        <Style x:Key="Attraction" TargetType="Button">
+            <EventSetter Event="PreviewMouseDown" Handler="Attraction_MouseDown"/>
+            <EventSetter Event="PreviewMouseUp" Handler="Attraction_MouseUp"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Template">
@@ -67,7 +67,7 @@
                                   BlurRadius="10" ShadowDepth="5"/>
             </Button.Effect>
         </Button>
-        <Border x:Name="LeftSiderBarLogin" Grid.Column="0" 
+        <Border x:Name="LeftSiderBar" Grid.Column="0" 
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 Background="#70f5f0e5" Margin="0,30,5,30" 
                 CornerRadius="0,25,25,0" BorderThickness="0,1,1,1" BorderBrush="Black">
@@ -93,6 +93,7 @@
         </Border>
 
         <!-- 中间地图部分 -->
+        <!-- MainTitle -->
         <Border Grid.Column="1" 
                 CornerRadius="25" Width="250"
                 Background="#70f5f0e5"
@@ -104,6 +105,7 @@
                 CornerRadius="25"
                 Margin="5,70,5,5" 
                 BorderThickness="1" BorderBrush="Blue" ClipToBounds="True">
+            <!-- 对border属性进行设置 -->
             <Border.Background>
                 <ImageBrush ImageSource="Assert\Image\Map.png"/>
             </Border.Background>
@@ -117,8 +119,9 @@
             </Border.Clip>
 
             <!-- 栅格化矩阵 -->
-            <Grid x:Name="AtlasGrid" MouseDown="Canvas_MouseDown" MouseUp="Canvas_MouseUp">
-
+            <Grid x:Name="AtlasGrid"
+                  Background="Transparent"
+                  MouseDown="AtlasGrid_MouseDown" MouseUp="AtlasGrid_MouseUp">
             </Grid>
         </Border>
 
