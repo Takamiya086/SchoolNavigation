@@ -23,21 +23,37 @@ namespace SchoolNavigationSystem
     {
         // TODO 之后要设置文件来对数据进行存储
         // 测试用数据
-        internal Dictionary<String, String> adminList = new(); // 管理员用户集
-        internal string[,] AttractionInfo = new string[200, 220]; // 拿来存景点信息
 
+        public struct Attraction
+        {
+            public int Row { get; set; }
+            public int Column { get; set; }
+            public Attraction(int x, int y)
+            {
+                Row = x;
+                Column = y;
+            }
+        } // 定义景点结构体
+
+        internal Dictionary<String, String> adminList = new(); // 管理员用户集
+        internal string[,] attractionInfo = new string[200, 220]; // 拿来存景点信息
+        internal List<Attraction> storedAttractions = new(); // 存储已知节点
+
+        // 窗体构造函数
         public MainWindow()
         {
+            AddAttractionToData(45, 150, "邮电大学东区教学楼"); // TODO Pin图片还得扣一下
+            AddAttractionToData(60, 160, "安美公寓楼");
+            AddAttractionToData(70, 160, "安悦公寓楼");
+            AddAttractionToData(100, 140, "东升食堂");
+            AddAttractionToData(135, 130, "东区家属楼");
+
             InitializeComponent();
-
             InitializeAtlas(200, 220); // 目前测试数据大小，大小差不多，大一点也可以，这个大小感觉稍微有点小，不过也可以用
-
-            AddAttractionToUI(49, 49, "我觉得你说得对"); // 尝试添加景点
+            InitializeStoredAttractions();
         }
 
-        // 地图点击显示信息测试
-
-        // 初始化地图函数 通常情况只调用一次
+        // 初始化地图函数 重复调用的情况出现于转换身份（可能）
         private void InitializeAtlas(int row, int column)
         {
             // 先清理网格，防止重复添加
@@ -55,7 +71,17 @@ namespace SchoolNavigationSystem
             }
             return;
         }
+        // 初始化已经存在的节点 TODO 整合到初始化地图的函数里面
+        private void InitializeStoredAttractions()
+        {
+            foreach (Attraction item in storedAttractions)
+            {
+                AddAttractionToUI(item.Row, item.Column);
+            }
+            return;
+        }
 
+        // 地图点击事件·用户
         private void AtlasGrid_MouseDown(object sender, RoutedEventArgs e) { return; }
         private void AtlasGrid_MouseUp(object sender, RoutedEventArgs e)
         {
@@ -64,21 +90,14 @@ namespace SchoolNavigationSystem
             return;
         }
 
-        // 景点被点击时替换信息显示框的文字
+        // 景点被点击时 替换or添加 信息显示框的文字
         private void Attraction_MouseDown(object sender, RoutedEventArgs e) { return; }
         private void Attraction_MouseUp(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            string targetInfo = AttractionInfo[Grid.GetRow(button), Grid.GetColumn(button)];
-            if (Info.Text != targetInfo)
-            {
-                LeftSiderBar.Visibility = Visibility.Visible;
-                Info.Text = targetInfo;
-            }
-            else
-            {
-                Info.Text = string.Empty;
-            }
+            string targetInfo = attractionInfo[Grid.GetRow(button), Grid.GetColumn(button)];
+            LeftSiderBar.Visibility = Visibility.Visible;
+            Info.Text = targetInfo;
             return;
         }
 
@@ -161,13 +180,12 @@ namespace SchoolNavigationSystem
             if (LeftSiderBar.Visibility == Visibility.Visible)
             {
                 LeftSiderBar.Visibility = Visibility.Collapsed;
-                return;
             }
             else
             {
                 LeftSiderBar.Visibility = Visibility.Visible;
-                return;
             }
+            return;
         }
 
         // 右边收起按钮
@@ -184,28 +202,43 @@ namespace SchoolNavigationSystem
             if (RightSiderBarLogin.Visibility == Visibility.Visible)
             {
                 RightSiderBarLogin.Visibility = Visibility.Collapsed;
-                return;
             }
             else
             {
                 RightSiderBarLogin.Visibility = Visibility.Visible;
-                return;
             }
+            return;
         }
 
-        // 添加景点的函数，不是管理员不可以用
-        private void AddAttractionToUI(int row, int col, string info)
+
+        #region Methods Only for Administrator 
+
+        // 添加景点的函数·数据
+        private void AddAttractionToData(int row, int col, string info)
         {
-            Button button = new Button
-            {
-                Content = ""
-            };
+            storedAttractions.Add(new Attraction(row, col)); // 添加景点
+            attractionInfo[row, col] = info; // 存储节点信息
+        }
+        // 添加景点的函数·UI
+        private void AddAttractionToUI(int row, int col)
+        {
+            Button button = new Button { Content = "" };
             button.Style = (Style)this.Resources["Attraction"];
             Grid.SetRow(button, row);
             Grid.SetColumn(button, col);
             AtlasGrid.Children.Add(button);
-            AttractionInfo[49, 49] = info;
             return;
         }
+
+        // 地图点击事件·管理员
+        private void AtlasGrid_Admin_MouseDown()
+        {
+            return;
+        }
+        private void AtlasGrid_Admin_MouseUp()
+        {
+            return;
+        }
+        #endregion
     }
 }
