@@ -48,7 +48,10 @@
                     <PathGeometry>
                         <PathFigure StartPoint="4,12">
                             <LineSegment Point="8,6"/>
-                            <LineSegment Point="16,0"/>
+                            <LineSegment Point="12,1"/>
+                            <LineSegment Point="14,0.5"/>
+                            <LineSegment Point="18,0.5"/>
+                            <LineSegment Point="20,1"/>
                             <LineSegment Point="24,6"/>
                             <LineSegment Point="28,12"/>
                             <LineSegment Point="16,32"/>
@@ -137,7 +140,6 @@
                   ClipToBounds="True"
                   MouseDown="AtlasGrid_MouseDown" MouseUp="AtlasGrid_MouseUp">
             </Grid>
-
         </Border>
 
         <!-- 右侧栏 -->
@@ -156,63 +158,108 @@
                 Background="#70f5f0e5" Margin="5,30,0,30" 
                 CornerRadius="25,0,0,25"  BorderThickness="1,1,0,1" BorderBrush="Black">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30*"/>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="150*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <!-- 登录前的右侧栏内容 -->
+                <Grid x:Name="BeforeLogin" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="40*"/>
+                        <RowDefinition Height="150*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- 右侧栏第1行 -->
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                       Content="登录" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                       FontSize="40" FontWeight="Bold"  Foreground="Black"/>
+                    <!-- 右侧栏第1行·登录前 -->
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                           Content="登录" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           FontSize="40" FontWeight="Bold"  Foreground="Black"/>
 
-                <!-- 右侧栏第2行 -->
-                <Label Grid.Row="1" Grid.Column="0"
-                       Content="用户名" FontWeight="Bold"
-                       Margin="16,13,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox x:Name="LoginUserName"
-                         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                         Width="250" Height="30" Margin="5"
-                         FontSize="15" VerticalContentAlignment="Center"/>
+                    <!-- 右侧栏第2行·登录前 -->
+                    <Label Grid.Row="1" Grid.Column="0"
+                           Content="用户名" FontWeight="Bold"
+                           Margin="16,13,0,0"
+                           HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox x:Name="LoginUserName"
+                             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                             Width="250" Height="30" Margin="5"
+                             FontSize="15" VerticalContentAlignment="Center"
+                             KeyDown="Username_KeyDown"/>
 
-                <!-- 右侧栏第3行 -->
-                <Label Grid.Row="2" Grid.Column="0"
-                       Content="密码" FontWeight="Bold" 
-                       Margin="16,13,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <PasswordBox x:Name="LoginPassword"
-                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                         Width="250" Height="30" Margin="5"
-                         FontSize="15" VerticalContentAlignment="Center"/>
-                <Label x:Name="LoginMessage"
-                       Grid.Row="2" Grid.Column="0"
-                       Height="15" Padding="0"
-                       HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                       FontSize="10" Foreground="Red"
-                       Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
+                    <!-- 右侧栏第3行·登录前 -->
+                    <Label Grid.Row="2" Grid.Column="0"
+                           Content="密码" FontWeight="Bold" 
+                           Margin="16,13,0,0"
+                           HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <PasswordBox x:Name="LoginPassword"
+                                 Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                 Width="250" Height="30" Margin="5"
+                                 FontSize="15" VerticalContentAlignment="Center"
+                                 KeyDown="Password_KeyUp"/>
+                    <Label x:Name="LoginMessage"
+                           Grid.Row="2" Grid.Column="0"
+                           Height="15" Padding="0"
+                           HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                           FontSize="10" Foreground="Red"
+                           Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
 
-                <!-- 右侧栏第4行 -->
-                <Button x:Name="LoginButton" 
-                        Content="登录" Grid.Row="3" Grid.Column="0" 
-                        Height="35" Margin="5" VerticalAlignment="Top"
-                        Style="{StaticResource RoundedButtonStyle}" FontWeight="Bold" 
-                        Foreground="White" Background="#4583eb" 
-                        PreviewMouseDown="LoginButton_MouseDown" PreviewMouseUp="LoginButton_MouseUp">
-                </Button>
-                <Button x:Name="RegisterButton" 
-                        Content="注册" Grid.Row="3" Grid.Column="1" 
-                        Height="35" Margin="5" VerticalAlignment="Top"
-                        Style="{StaticResource RoundedButtonStyle}" FontWeight="Bold" 
-                        Foreground="Black" Background="White" 
-                        PreviewMouseDown="RegisterButton_MouseDown" PreviewMouseUp="RegisterButton_MouseUp">
-                </Button>
+                    <!-- 右侧栏第4行·登录前 -->
+                    <Button x:Name="LoginButton" IsDefault="True"
+                            Content="登录" Grid.Row="3" Grid.Column="0" 
+                            Height="35" Margin="5" VerticalAlignment="Top"
+                            Style="{StaticResource RoundedButtonStyle}" FontWeight="Bold" 
+                            Foreground="White" Background="#4583eb" 
+                            PreviewMouseDown="LoginButton_MouseDown" PreviewMouseUp="LoginButton_MouseUp">
+                    </Button>
+                    <Button x:Name="RegisterButton" 
+                            Content="注册" Grid.Row="3" Grid.Column="1" 
+                            Height="35" Margin="5" VerticalAlignment="Top"
+                            Style="{StaticResource RoundedButtonStyle}" FontWeight="Bold" 
+                            Foreground="Black" Background="White" 
+                            PreviewMouseDown="RegisterButton_MouseDown" PreviewMouseUp="RegisterButton_MouseUp">
+                    </Button>
+                </Grid>
+                <!-- 登录后的右侧栏内容 -->
+                <Grid x:Name="AfterLogin" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="55"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 右侧栏第1行·登录后 -->
+                    <!-- 用户提示 -->
+                    <TextBlock Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                               FontSize="13" FontWeight="Bold">
+                        欢迎，您已是管理员，拥有所有权限
+                    </TextBlock>
+                    <!-- 退出登录按钮 -->
+                    <Button x:Name="ExitButton"
+                            Grid.Row="0" Grid.Column="1"
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                            Height="25" BorderThickness="0"
+                            Background="Transparent"
+                            PreviewMouseDown="ExitButton_MouseDown" PreviewMouseUp="ExitButton_MouseUp">
+                        <TextBlock Text="退出..." FontSize="12" FontWeight="Black" TextDecorations="Underline"/>
+                    </Button>
+
+                    <!-- 命令区 -->
+                    <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                             FontWeight="Black"
+                             Margin="15" Background="Transparent">
+                        <ListBoxItem>
+                            <TextBlock Text="※ 点击地图尚未登记的点，可以登记地点" TextWrapping="Wrap"/>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <TextBlock Text="※ 点击地图尚未登记的点，可以登记地点" TextWrapping="Wrap"/>
+                        </ListBoxItem>
+                    </ListBox>
+                </Grid>
             </Grid>
         </Border>
     </Grid>
