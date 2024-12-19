@@ -21,7 +21,6 @@ namespace SchoolNavigationSystem
     /// </summary>
     public partial class MainWindow : Window
     {
-        // TODO 之后要设置文件来对数据进行存储
         // 测试用数据
 
         public struct Attraction
@@ -42,11 +41,14 @@ namespace SchoolNavigationSystem
         // 窗体构造函数
         public MainWindow()
         {
-            AddAttractionToData(45, 150, "邮电大学东区教学楼"); // TODO Pin图片还得扣一下
+            // 测试用数据
+            AddAttractionToData(45, 150, "邮电大学东区教学楼");
             AddAttractionToData(60, 160, "安美公寓楼");
             AddAttractionToData(70, 160, "安悦公寓楼");
             AddAttractionToData(100, 140, "东升食堂");
             AddAttractionToData(135, 130, "东区家属楼");
+
+            adminList["114514"] = "1919810"; // 测试用admin
 
             InitializeComponent();
             InitializeAtlas(200, 220); // 目前测试数据大小，大小差不多，大一点也可以，这个大小感觉稍微有点小，不过也可以用
@@ -101,11 +103,38 @@ namespace SchoolNavigationSystem
             return;
         }
 
+        // 用户名结束转换光标事件·Enter
+        private void Username_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginPassword.Focus();
+            }
+        }
+        // 密码结束的登录事件·Enter 
+        private void Password_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // 模拟鼠标点击事件（触发 PreviewMouseDown 和 PreviewMouseUp）
+                var mouseDownEvent = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.PreviewMouseDownEvent
+                };
+                var mouseUpEvent = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.PreviewMouseUpEvent
+                };
+
+                // 触发 PreviewMouseDown 和 PreviewMouseUp 事件
+                LoginButton.RaiseEvent(mouseDownEvent);
+                LoginButton.RaiseEvent(mouseUpEvent);
+            }
+        }
+
         // 登录按钮事件
-        // TODO 可选，封装到按钮事件里面，除了按钮函数以外都不用这个函数。或者可以直接不清除，让用户自己删
         private void ResetLoginTextBox()
         {
-            LoginUserName.Text = string.Empty;
             LoginPassword.Password = string.Empty;
             return;
         }
@@ -131,7 +160,8 @@ namespace SchoolNavigationSystem
             {
                 if (adminList[LoginUserName.Text] == LoginPassword.Password)
                 {
-                    // TODO登录成功 重新加载界面
+                    BeforeLogin.Visibility = Visibility.Collapsed;
+                    AfterLogin.Visibility = Visibility.Visible;
                     return;
                 }
                 else
@@ -162,6 +192,24 @@ namespace SchoolNavigationSystem
             RegisterButton.Background = new SolidColorBrush(color);
 
             LoginMessage.Content = "你没有权限";
+            return;
+        }
+
+        // 登录后退出按钮事件
+        private void ExitButton_MouseDown(Object sender, MouseButtonEventArgs e)
+        {
+            // TODO 改一个自己喜欢的颜色
+            // Color color = (Color)ColorConverter.ConvertFromString("#224989");
+            // ExitButton.Background = new SolidColorBrush(color);
+            return;
+        }
+        private void ExitButton_MouseUp(Object sender, MouseButtonEventArgs e)
+        {
+            // TODO 改一个自己喜欢的颜色
+            // Color color = (Color)ColorConverter.ConvertFromString("#224989");
+            // ExitButton.Background = new SolidColorBrush(color);
+            AfterLogin.Visibility = Visibility.Collapsed;
+            BeforeLogin.Visibility = Visibility.Visible;
             return;
         }
 
@@ -210,7 +258,6 @@ namespace SchoolNavigationSystem
             return;
         }
 
-
         #region Methods Only for Administrator 
 
         // 添加景点的函数·数据
@@ -239,6 +286,8 @@ namespace SchoolNavigationSystem
         {
             return;
         }
+
         #endregion
+
     }
 }
