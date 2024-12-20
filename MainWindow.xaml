@@ -68,7 +68,7 @@
     </Window.Background>
 
     <!-- 主要网格区 -->
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="295*"/>
             <ColumnDefinition Width="690*"/>
@@ -243,7 +243,7 @@
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"
                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                             Height="25" BorderThickness="0"
-                            Background="Transparent"
+                            Foreground="White" Background="#4583eb"
                             PreviewMouseDown="ExitButton_MouseDown" PreviewMouseUp="ExitButton_MouseUp">
                         <TextBlock Text="退出..." FontSize="12" FontWeight="Black" TextDecorations="Underline"/>
                     </Button>
