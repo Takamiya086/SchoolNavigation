@@ -148,35 +148,37 @@ namespace SchoolNavigationSystem
         {
             Color color = (Color)ColorConverter.ConvertFromString("#4583eb");
             LoginButton.Background = new SolidColorBrush(color);
-
             if (string.IsNullOrEmpty(LoginUserName.Text) || string.IsNullOrEmpty(LoginUserName.Text))
             {
                 LoginMessage.Content = "必填项不能为空";
                 ResetLoginTextBox();
-                return;
             }
-
             if (adminList.ContainsKey(LoginUserName.Text))
             {
                 if (adminList[LoginUserName.Text] == LoginPassword.Password)
                 {
+                    ResetLoginTextBox();
                     BeforeLogin.Visibility = Visibility.Collapsed;
                     AfterLogin.Visibility = Visibility.Visible;
-                    return;
+                    // 登录之后 为地图订阅高权限的事件
+                    AtlasGrid.MouseDown -= AtlasGrid_MouseDown;
+                    AtlasGrid.MouseDown += AtlasGrid_Admin_MouseDown;
+                    AtlasGrid.MouseUp -= AtlasGrid_MouseUp;
+                    AtlasGrid.MouseUp += AtlasGrid_Admin_MouseUp;
                 }
                 else
                 {
                     LoginMessage.Content = "密码错误";
                     ResetLoginTextBox();
-                    return;
                 }
             }
             else
             {
                 LoginMessage.Content = "用户名不存在";
                 ResetLoginTextBox();
-                return;
+
             }
+            return;
         }
 
         // 注册按钮事件
@@ -195,21 +197,25 @@ namespace SchoolNavigationSystem
             return;
         }
 
-        // 登录后退出按钮事件
+        // 登录后 退出按钮事件
         private void ExitButton_MouseDown(Object sender, MouseButtonEventArgs e)
         {
-            // TODO 改一个自己喜欢的颜色
-            // Color color = (Color)ColorConverter.ConvertFromString("#224989");
-            // ExitButton.Background = new SolidColorBrush(color);
+            Color color = (Color)ColorConverter.ConvertFromString("#224989");
+            ExitButton.Background = new SolidColorBrush(color);
             return;
         }
         private void ExitButton_MouseUp(Object sender, MouseButtonEventArgs e)
         {
-            // TODO 改一个自己喜欢的颜色
-            // Color color = (Color)ColorConverter.ConvertFromString("#224989");
-            // ExitButton.Background = new SolidColorBrush(color);
+            Color color = (Color)ColorConverter.ConvertFromString("#4583eb");
+            LoginButton.Background = new SolidColorBrush(color);
             AfterLogin.Visibility = Visibility.Collapsed;
             BeforeLogin.Visibility = Visibility.Visible;
+
+            // 退出后 订阅一个权限更低的事件
+            AtlasGrid.MouseDown -= AtlasGrid_Admin_MouseDown;
+            AtlasGrid.MouseDown += AtlasGrid_MouseDown;
+            AtlasGrid.MouseUp -= AtlasGrid_Admin_MouseUp;
+            AtlasGrid.MouseUp += AtlasGrid_MouseUp;
             return;
         }
 
@@ -258,7 +264,9 @@ namespace SchoolNavigationSystem
             return;
         }
 
-        #region Methods Only for Administrator 
+        #region Methods Only for Administrator
+
+        private bool isAdmin = false; // 识别管理员身份 目前没什么用，感觉可能有用
 
         // 添加景点的函数·数据
         private void AddAttractionToData(int row, int col, string info)
@@ -278,11 +286,11 @@ namespace SchoolNavigationSystem
         }
 
         // 地图点击事件·管理员
-        private void AtlasGrid_Admin_MouseDown()
+        private void AtlasGrid_Admin_MouseDown(object sender, RoutedEventArgs e)
         {
             return;
         }
-        private void AtlasGrid_Admin_MouseUp()
+        private void AtlasGrid_Admin_MouseUp(object sender, RoutedEventArgs e)
         {
             return;
         }
