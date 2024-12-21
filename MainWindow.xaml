@@ -26,7 +26,7 @@
             </Setter>
         </Style>
 
-        <!-- 地点标记样式模板-->
+        <!-- 地点标记样式模板 -->
         <Style x:Key="Attraction" TargetType="Button">
             <EventSetter Event="PreviewMouseDown" Handler="Attraction_MouseDown"/>
             <EventSetter Event="PreviewMouseUp" Handler="Attraction_MouseUp"/>
@@ -59,6 +59,14 @@
                     </PathGeometry>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- 道路样式模板 -->
+        <Style x:Key="RoadLine" TargetType="Line">
+            <EventSetter Event="PreviewMouseDown" Handler="RoadLine_MouseDown"/>
+            <EventSetter Event="PreviewMouseUp" Handler="RoadLine_MouseUp"/>
+            <Setter Property="Stroke" Value="CornflowerBlue"/>
+            <Setter Property="StrokeThickness" Value="3"/>
         </Style>
     </Window.Resources>
 
@@ -136,7 +144,6 @@
 
             <!-- 栅格化矩阵·需要动态绘制的部分 -->
             <Grid x:Name="AtlasGrid"
-                  Background="Transparent"
                   ClipToBounds="True"
                   MouseDown="AtlasGrid_MouseDown" MouseUp="AtlasGrid_MouseUp">
             </Grid>
