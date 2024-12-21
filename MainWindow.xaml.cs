@@ -22,7 +22,6 @@ namespace SchoolNavigationSystem
     public partial class MainWindow : Window
     {
         // 测试用数据
-
         public struct Attraction
         {
             public int Row { get; set; }
@@ -34,9 +33,13 @@ namespace SchoolNavigationSystem
             }
         } // 定义景点结构体
 
+        #region 全局字段区
+
         internal Dictionary<String, String> adminList = new(); // 管理员用户集
         internal string[,] attractionInfo = new string[200, 220]; // 拿来存景点信息
         internal List<Attraction> storedAttractions = new(); // 存储已知节点
+
+        #endregion
 
         // 窗体构造函数
         public MainWindow()
@@ -52,7 +55,39 @@ namespace SchoolNavigationSystem
 
             InitializeComponent();
             InitializeAtlas(200, 220); // 目前测试数据大小，大小差不多，大一点也可以，这个大小感觉稍微有点小，不过也可以用
+
+            // 计算单元格的实际坐标
+            double gridWidth = AtlasGrid.ActualWidth;
+            double gridHeight = AtlasGrid.ActualHeight;
             InitializeStoredAttractions();
+
+            // 懒得描真实路线了，还是直接画直线吧
+
+            Line line = new Line
+            {
+                StrokeThickness = 3,
+                Stroke = Brushes.CornflowerBlue
+            };
+
+            // 连接教学楼和安美公寓的一条线测试
+            AtlasGrid.SizeChanged += (sender, e) =>
+            {
+                // 本来不想用实际坐标的，结果还是要用
+                double startX = 150 * (gridWidth / 220);
+                double startY = 45 * (gridHeight / 200);
+
+                double endX = 160 * (gridWidth / 220);
+                double endY = 60 * (gridHeight / 200);
+
+                line.X1 = startX;
+                line.Y1 = startY;
+                line.X2 = endX;
+                line.Y2 = endY;
+            };
+            Grid.SetRowSpan(line, 200);
+            Grid.SetColumnSpan(line, 220);
+
+            AtlasGrid.Children.Add(line);
         }
 
         // 初始化地图函数 重复调用的情况出现于转换身份（可能）
@@ -264,6 +299,18 @@ namespace SchoolNavigationSystem
             return;
         }
 
+        // 道路点击事件
+        private void RoadLine_MouseDown(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            return;
+        }
+        private void RoadLine_MouseUp(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            return;
+        }
+
         #region Methods Only for Administrator
 
         private bool isAdmin = false; // 识别管理员身份 目前没什么用，感觉可能有用
@@ -282,6 +329,19 @@ namespace SchoolNavigationSystem
             Grid.SetRow(button, row);
             Grid.SetColumn(button, col);
             AtlasGrid.Children.Add(button);
+            return;
+        }
+
+        // 添加道路的函数·数据
+        private void AddRoadToData()
+        {
+            // TODO 将测试数据封装
+            return;
+        }
+        // 添加道路的函数·UI
+        private void AddRoadToUI()
+        {
+            // TODO 将测试数据封装
             return;
         }
 
