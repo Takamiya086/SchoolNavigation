@@ -447,7 +447,10 @@
                             <TextBlock Text="※ 左键点击地图已登记的点以修改地点" TextWrapping="Wrap"/>
                         </ListBoxItem>
                         <ListBoxItem>
-                            <TextBlock Text="※ 右键点击地图上存在的点以添加路径" TextWrapping="Wrap"/>
+                            <TextBlock Text="※ 左键点击地图上存在的道路以修改路径" TextWrapping="Wrap"/>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <TextBlock Text="※ 右键点击地图上存在的两个点以添加路径" TextWrapping="Wrap"/>
                         </ListBoxItem>
                     </ListBox>
                 </Grid>
